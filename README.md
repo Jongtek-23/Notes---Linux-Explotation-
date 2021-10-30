@@ -33,3 +33,18 @@ microsoft-ds    445/tcp     # Microsoft Naked CIFS
 Using nmap:
 `nmap -sT -sU -sV <IP target> -p135,137,138,139,445 --open`
 
+Enemarate SMB
+```bash
+nmap --script smb-enum-shares <IP target>
+
+smbclient -L <IP target>
+smbmap -H <IP target>
+```
+SMBMAP allows interact with the remote file system, searching file contents for specific strings, and even execiting commands.
+
+
+
+
+
+
+
