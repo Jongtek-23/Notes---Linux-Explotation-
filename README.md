@@ -55,11 +55,29 @@ mount -t cifs \\<IP target>\www /mnt/www
 cd /mnt/www
 ls -las
 ```
-##### SAMBA - SMB Users -> enumarate users over the SMB protocol
+##### SAMBA - SMB User -> enumarate users over the SMB protocol
+- Enumerate with `rpcclient`
+```bash
+for u in $(users.txt); do rpcclient -U "" <IP target> -N --command="lookupnames $u"; done | grep "User: 1"
 
 
+The “User: 1” in the output indicates that the user exists on the remote system.
+```
+- Some useful `rpcclient` commands include "lookupsids," "netshareenum," "srvinfo" and "enumprivs" to mention several. 
 
-
+- Enumerate with `enum4linux`
+```bash
+• Operating System
+• Users
+• Password policies
+• Group membership
+• Shares
+• Domain/Workgroup Identification
+```
+- Command `enum4linux` against a SAMBA server:
+```bash
+enum4linux <IP target>
+```
 
 
 
