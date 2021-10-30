@@ -1,6 +1,8 @@
 # Notes---Linux-Explotation-
 
-### Information Gathering - Commands
+# 
+
+### Remote Enumeration - Information Gathering - Commands
 
 ##### Enumerating NFS (Network File System)
 ```bash
@@ -78,7 +80,7 @@ The “User: 1” in the output indicates that the user exists on the remote sys
 ```bash
 enum4linux <IP target>
 ```
-
+##### Enumerating SMTP Users
 
 
 
