@@ -82,8 +82,65 @@ enum4linux <IP target>
 ```
 ##### Enumerating SMTP Users
 
+- Verbs of SMTP : `"HELO", "RCPT" or "MAIL"`
 
+- Sent an email while directly connected to an email server via `telnet` or some other way :
+```bash
+telnet mail.server.site 25
+```
+- A large majority of mail servers in-use are Linux-based, we’ll be focusing on enumerating users from `Sendmail`, a popular Open-Source *NIX-based mail server. 
 
+- Enumerate which options, "verbs" or "features" are enabled on an SMTP server -> 25/tcp
+```bash
+nmap --script smtp-commands 192.168.13.26 -p 25
+```
+- Direct enumeration options SMTP with `telnet` oe `netcat`, tp see which verbs are enebled on the mail server :
+```bash
+telnet <IP target> 25
+>> help
+
+nc <IP target> 25
+>> help
+```
+- Using the verb `RCPT TO` -> who we’re sending the mail to, in this case, the user we’re enumerating.
+- First , connect:
+```bash
+telnet <IP target> 25
+```
+- Second, `HELO` to a domain name :
+```bash
+> HELO tester.localdomain
+```
+- Third, we tell the server who the mail will be from with the "MAIL FROM":
+```bash
+> MAIL FROM: tester@tester.localdomain
+```
+- Fourth, enumerate potential users from the system with the "RCPT TO: <user@domain.com>" command:
+```bash
+> RCPT TO: root@server2.localdomain
+> RCPT TO: jongtek@server2.localdomain
+```
+- Another feature we can use to enumerate users is the `EXPN` feature.
+```bash
+> EXPN root
+> EXPN jongtek
+```
+-  `VRFY` , to enumerate users:
+```bash
+telnet <IP target> 25
+> HELO foo
+> VRFY root
+> VRFY jongtek
+```
+- `smtp-user-enum` by pentestmonkey. A tool that automates the user enumeration for SMTP:
+```bash
+smtp-user-enum -M VRFY -U user.txt -t <IP target>
+smtp-user-enum -M EXPN -u admin -t <IP target>
+smtp-user-enum -M RCPT -U user.txt -T mail-servers-ips.txt
+smtp-user-enum -M EXPN -D example.com -U user.txt -t <IP target>
+```
+
+### Local Enumeration - Information Gathering - Commands
 
 
 
