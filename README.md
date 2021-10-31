@@ -143,6 +143,69 @@ smtp-user-enum -M EXPN -D example.com -U user.txt -t <IP target>
 ### Local Enumeration - Information Gathering - Commands
 
 
+#### Local Enumeration - Network information
+
+- Important questions:
+```bash
+• How is the exploited machine connected to the network?
+• Is the machine multi-homed? Can we pivot to other hosts in other segments?
+• Do we have unfettered outbound connectivity to the internet or is egress traffic limited to certain ports or protocols?
+• Is there a firewall between me and other devices/machines?
+• Is the machine I’m on, communicating with other hosts? If so, what is the purpose or function of the hosts that my current machine is communicating with?
+• What protocols are being used that are originating from my actively exploited machine? Are we initiating FTP connections or other connections (SSH, etc.) to other machines?
+• Are other machines initiating a connection with me? If so, can that traffic be intercepted or sniffed as cleartext in transit? Is it encrypted?
+```
+- `ifconfig` is used to get information regarding our current network interfaces. We want to know what our IP address is, and whether or not there are additional interfaces that we may be able to use as pivots to other network segments:
+```bash
+ifconfig -a
+
+'-a' -> for a full listing of interfaces
+```
+- `route` is used to print our current network routes, which includes our gateway of course. Knowing what our static routes and gateway are can help us in case we need to manually configure our network interfaces, pivot to other network segments, or will come in handy if we decide to execute ARP-poisoning or other Man-In-The-Middle- style attacks.
+```bash
+route -n
+```
+- `traceroute` is used to know how many hops are between our compromised machine:
+```bash
+traceroute -n <IP target>
+```
+- DNS information:
+```bash
+cat /etc/resolv.conf
+
+Question:
+- What machine is resolving our DNS queries?
+- Can we use it to exfiltrate data over a DNS tunnel?
+- Is the DNS server vulnerable to any exploits?
+- Is it an Active Directory controller?
+```
+- `ARP cache`. This information is useful when it comes down to determining who we’re communicating with, what’s being communicated, and whether that traffic or communication has any value to us from an exploitation perspective. I.E., credentials transmitted in cleartext, etc.
+```bash
+apr -en
+```
+- `netstat`
+```bash
+netstat -auntp
+netstat -tulpn
+
+This gives us:
+• What other machines or devices we are currently connected to
+• Which ports or services on other machines we are connected to
+• What ports our current machine are listening on
+• Are there other systems establishing connections with our current machine
+```
+- `netstat without netstat`:
+```bash
+cat /proc/net/tcp
+cat /proc/net/udp
+```
+- `ss` , an alternative to 'netstat':
+```bash
+ss -twurp
+```
+
+
+
 
 
 
