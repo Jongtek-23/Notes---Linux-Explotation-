@@ -143,7 +143,7 @@ smtp-user-enum -M EXPN -D example.com -U user.txt -t <IP target>
 ### Local Enumeration - Information Gathering - Commands
 
 
-#### Local Enumeration - Network information
+#### Local Enumeration - Network Information
 
 - Important questions:
 ```bash
@@ -203,9 +203,13 @@ cat /proc/net/udp
 ```bash
 ss -twurp
 ```
+- `Outbound Port Connectivity`. Check outbound firewall rules. Knowing this information will come in handy if and when we need to establish outbound connections to other systems we control for the purpose of maintaining access or exfiltrating data.
+```bash
+nmap -sT -p4444-4450 portquiz.net
 
-
-
+- Considering using nmap’s --T (timing) option at a low value to stay under any internal IDS radar.
+```
+#### Local Enumeration - System Information
 
 
 
