@@ -210,7 +210,63 @@ nmap -sT -p4444-4450 portquiz.net
 - Considering using nmap’s --T (timing) option at a low value to stay under any internal IDS radar.
 ```
 #### Local Enumeration - System Information
-
+- Our goal is to get information regarding:
+```bash
+- Operating System and Kernel
+- Environment Variables
+- Interesting Files and Sensitive Information
+- Users, Groups, Permissions and Privileges
+- Services and Associated Configuration files
+- Cron Jobs, System Tasks
+- Installed Applications and Versions
+- Running Processes
+```
+- The following commands can be used for gathering information from a target locally:
+- Current User Information and Kernel Version:
+```bash
+id && uname -a
+```
+- Current User Information from /etc/passwd:
+```bash
+grep $USER /etc/passwd
+```
+- Most Recent Logins and Who is currently logged onto the system and Last Logged On Users:
+```bash
+lastlog && w && last
+```
+- All Users Including UID and GID Information:
+```bash
+for user in $(cat /etc/passwd | cut -f1 -d":"); do id $user; done
+```
+- List all UID 0 (root) Accounts:
+```bash
+cat /etc/passwd |cut -f1,3,4 -d":" |grep "0:0" |cut -f1 -d":" | awk '{print $1}'
+```
+- Read passwd File and Check readability of the shadow file:
+```bash
+cat /etc/passwd && cat /etc/shadow
+```
+- What can we sudo without a password? Can we read the /etc/sudoers file? Can we read roots .bash_history file?
+```bash
+sudo -l
+cat /etc/sudoers
+cat /root/.bash_history
+```
+- Can we read any other users’ .bash_history files?
+```bash
+find /home/* -name *.*history* -print 2> /dev/null
+```
+- Operating System:
+```bash
+cat /etc/issue
+cat /etc/*-release
+```
+- Can we sudo known binaries that allow breaking out into a shell?
+```bash
+sudo -l | grep vim 
+sudo -l | grep nmap
+sudo -l | grep vi
+```
 
 
 
