@@ -222,7 +222,7 @@ nmap -sT -p4444-4450 portquiz.net
 - Running Processes
 ```
 - The following commands can be used for gathering information from a target locally:
-- Current User Information and Kernel Version:
+- Current User Information | Kernel Version:
 ```bash
 id && uname -a
 ```
@@ -230,7 +230,7 @@ id && uname -a
 ```bash
 grep $USER /etc/passwd
 ```
-- Most Recent Logins and Who is currently logged onto the system and Last Logged On Users:
+- Most Recent Logins | Who is currently logged onto the system | Last Logged On Users:
 ```bash
 lastlog && w && last
 ```
@@ -266,6 +266,51 @@ cat /etc/*-release
 sudo -l | grep vim 
 sudo -l | grep nmap
 sudo -l | grep vi
+```
+- Can we list root’s home directory?
+```bash
+ls -als /root/
+```
+- Current $PATH environment variable:
+```bash
+echo $PATH
+```
+- List all cron jobs | Find world-writeable cron jobs:
+```bash
+cat /etc/crontab && ls -als /etc/cron*
+
+find /etc/cron* -type f -perm -o+w -exec ls -l {} \;
+```
+- List running processes | List all processes running as root | List all processes running as current user:
+```bash
+ps auxwww
+ps -u root
+ps -u $USER
+```
+- Find SUID files | Find SUID files owned by root | Find GUID files | Find world-writable files:
+```bash
+find / -perm -4000 -type f 2>/dev/null
+find / -uid 0 –perm -4000 –type f 2>/dev/null
+find / -perm -2000 -type -f 2>/dev/null
+find -perm -2 -type f 2>/dev/null
+```
+- Find conf files that contain the string "pass*" | List open files | List Installed Packages (Debian):
+```bash
+grep pass* /etc/*.conf
+lsof -n
+dpkg -l
+```
+- Common software versions:
+```bash
+sudo -V
+httpd -v
+apache2 -v
+mysql -V
+sendmail -d0.1
+```
+- Print process binaries/paths and permissions:
+```bash
+ps aux | awk '{print $11}' | xargs -r ls -la 2>/dev/null | awk '!x[$0]++'
 ```
 
 
