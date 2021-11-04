@@ -1,4 +1,4 @@
-# Notes---Linux-Explotation-
+# Notes - Linux Explotation - Information Gathering
 
 # 
 
